@@ -19,6 +19,17 @@ if (process.argv.includes("--stdio")) {
 } else {
   const app = express();
   app.use(express.json({ limit: "1mb" }));
+  // Permissive CORS: the catalog is public and read-mostly; lets browser-based MCP clients connect.
+  app.use((req, res, next) => {
+    res.set({
+      "access-control-allow-origin": "*",
+      "access-control-allow-methods": "GET, POST, DELETE, OPTIONS",
+      "access-control-allow-headers": "content-type, accept, authorization, mcp-session-id, mcp-protocol-version, last-event-id",
+      "access-control-expose-headers": "mcp-session-id, mcp-protocol-version",
+    });
+    if (req.method === "OPTIONS") return res.sendStatus(204);
+    next();
+  });
   app.use((req, res, next) => {
     const t0 = Date.now();
     res.on("finish", () => {

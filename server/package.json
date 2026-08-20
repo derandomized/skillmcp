@@ -5,9 +5,10 @@
   "type": "module",
   "description": "Remote MCP server exposing the SkillMCP catalog for browsing from any surface",
   "scripts": {
-    "build": "tsc -p . && esbuild ui/browse.src.js --bundle --format=esm --minify --outfile=ui/browse.bundle.js",
+    "build": "tsc -p . && esbuild ui/browse.src.js --bundle --format=esm --minify --outfile=ui/browse.bundle.js && esbuild test/host.src.js --bundle --format=esm --outfile=test/host.bundle.js",
     "dev": "tsx src/index.ts",
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "harness": "echo \"open http://127.0.0.1:8790/host.html?server=http://127.0.0.1:8765/mcp\" && (cd test && python3 -m http.server 8790)"
   },
   "dependencies": {
     "@modelcontextprotocol/ext-apps": "^1.7.5",

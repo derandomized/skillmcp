@@ -2,6 +2,7 @@ import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mc
 import { z } from "zod";
 import { registerAppTool, registerAppResource, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateSubmission, saveSubmission } from "./submit.js";
@@ -23,17 +24,12 @@ function fmtInstall(p, surface) {
         .map((s) => `${SURFACE_LABEL[s]}:\n` + p.installs[s].map((l, i) => `  ${i + 1}. ${l}`).join("\n"))
         .join("\n\n");
 }
-const UI_URI = "ui://skillmcp/browse.html";
-let uiHtml = null;
-function loadUiHtml() {
-    if (uiHtml)
-        return uiHtml;
-    const here = dirname(fileURLToPath(import.meta.url));
-    const html = readFileSync(join(here, "..", "ui", "browse.html"), "utf8");
-    const js = readFileSync(join(here, "..", "ui", "browse.bundle.js"), "utf8"); // built by esbuild (npm run build)
-    uiHtml = html.replace("/*__APP_JS__*/", () => js); // function form: bundle contains `$` patterns
-    return uiHtml;
-}
+// UI resource, versioned by content hash so hosts never serve a stale cached widget.
+const here = dirname(fileURLToPath(import.meta.url));
+const uiHtml = readFileSync(join(here, "..", "ui", "browse.html"), "utf8")
+    .replace("/*__APP_JS__*/", () => readFileSync(join(here, "..", "ui", "browse.bundle.js"), "utf8")); // function form: bundle contains `$` patterns
+const UI_URI = `ui://skillmcp/browse-${createHash("sha1").update(uiHtml).digest("hex").slice(0, 10)}.html`;
+function loadUiHtml() { return uiHtml; }
 export function buildServer() {
     const server = new McpServer({ name: "skillmcp", version: "0.1.0" }, {
         instructions: "SkillMCP is a provider-agnostic skills marketplace. Use list_skills / search_skills to browse, " +

@@ -2,3 +2,4 @@ node_modules/
 .env
 *.log
 site/
+server/test/host.bundle.js
