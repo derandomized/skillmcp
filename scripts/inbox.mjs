@@ -12,27 +12,40 @@ import { execSync } from "node:child_process";
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), "..");
 const INBOX = process.env.SKILLMCP_INBOX ?? join(homedir(), ".skillmcp", "inbox");
+// Remote mode: point at a hosted server's admin API instead of a local directory.
+//   SKILLMCP_INBOX_URL=https://skillmcp.fly.dev SKILLMCP_ADMIN_TOKEN=... node scripts/inbox.mjs
+const REMOTE = process.env.SKILLMCP_INBOX_URL?.replace(/\/$/, "");
+const TOKEN = process.env.SKILLMCP_ADMIN_TOKEN;
+async function api(path, method = "GET") {
+  const r = await fetch(`${REMOTE}/admin${path}`, { method, headers: { authorization: `Bearer ${TOKEN}` } });
+  if (!r.ok) throw new Error(`${method} ${path} → ${r.status}`);
+  return r.json();
+}
 const sh = (c, o = {}) => execSync(c, { cwd: ROOT, stdio: "pipe", encoding: "utf8", ...o }).trim();
 const [cmd, id] = process.argv.slice(2);
 
-const pending = () => existsSync(INBOX) ? readdirSync(INBOX).filter((f) => f.endsWith(".json")).sort() : [];
-const load = (id) => JSON.parse(readFileSync(join(INBOX, `${id}.json`), "utf8"));
+const pendingLocal = () => existsSync(INBOX) ? readdirSync(INBOX).filter((f) => f.endsWith(".json")).sort() : [];
+const listAll = async () => REMOTE ? api("/inbox") : pendingLocal().map((f) => JSON.parse(readFileSync(join(INBOX, f), "utf8")));
+const load = async (id) => REMOTE ? api(`/inbox/${id}`) : JSON.parse(readFileSync(join(INBOX, `${id}.json`), "utf8"));
+const archive = async (id, state) => {
+  if (REMOTE) return api(`/inbox/${id}/${state}`, "POST");
+  mkdirSync(join(INBOX, state), { recursive: true });
+  renameSync(join(INBOX, `${id}.json`), join(INBOX, state, `${id}.json`));
+};
 
 if (!cmd) {
-  const items = pending();
-  if (!items.length) { console.log(`inbox empty (${INBOX})`); process.exit(0); }
-  for (const f of items) {
-    const s = JSON.parse(readFileSync(join(INBOX, f), "utf8"));
+  const items = await listAll();
+  if (!items.length) { console.log(`inbox empty (${REMOTE ?? INBOX})`); process.exit(0); }
+  for (const s of items) {
     console.log(`${s.id}\n   ${s.displayName} — ${s.description.slice(0, 80)}\n   by ${s.submitter.name}${s.submitter.email ? ` <${s.submitter.email}>` : ""} via ${s.submitter.surface ?? "?"} at ${s.submittedAt}\n`);
   }
 } else if (cmd === "show") {
-  console.log(JSON.stringify(load(id), null, 2));
+  console.log(JSON.stringify(await load(id), null, 2));
 } else if (cmd === "reject") {
-  mkdirSync(join(INBOX, "rejected"), { recursive: true });
-  renameSync(join(INBOX, `${id}.json`), join(INBOX, "rejected", `${id}.json`));
+  await archive(id, "rejected");
   console.log("rejected", id);
 } else if (cmd === "pr") {
-  const s = load(id);
+  const s = await load(id);
   if (sh("git status --porcelain")) throw new Error("working tree not clean");
   try { sh("git config user.name && git config user.email"); } catch { throw new Error("set git user.name/user.email first"); }
   sh("gh auth status");
@@ -58,8 +71,7 @@ if (!cmd) {
   sh(`git push -q -u origin ${branch}`);
   const body = `## New skill submission\n\n**${s.displayName}** (\`${s.name}\`)\n\n${s.description}\n\n- Submitted by: ${who}\n- Surface: ${s.submitter.surface ?? "unknown"}\n- Submitted at: ${s.submittedAt}\n- Inbox id: \`${s.id}\`\n\n### Review checklist\n- [ ] Description says what AND when\n- [ ] Instructions are accurate and safe (no exfiltration, no credential handling)\n- [ ] Works when tried via \`get_skill\`\n- [ ] Category/keywords sensible\n`;
   const url = sh(`gh pr create --title ${JSON.stringify(`Add skill: ${s.displayName}`)} --body ${JSON.stringify(body)} --label submission 2>/dev/null || gh pr create --title ${JSON.stringify(`Add skill: ${s.displayName}`)} --body ${JSON.stringify(body)}`);
-  mkdirSync(join(INBOX, "opened"), { recursive: true });
-  renameSync(join(INBOX, `${id}.json`), join(INBOX, "opened", `${id}.json`));
+  await archive(id, "opened");
   sh("git checkout -q main");
   console.log("opened", url);
   } catch (e) {

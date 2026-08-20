@@ -4,6 +4,10 @@ import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
 import express from "express";
 import { buildServer } from "./server.js";
 import { getCatalog } from "./catalog.js";
+import { INBOX } from "./submit.js";
+import { readdirSync, readFileSync, existsSync, mkdirSync, renameSync } from "node:fs";
+import { join, basename } from "node:path";
+import { timingSafeEqual } from "node:crypto";
 const PORT = Number(process.env.PORT ?? 8765);
 const HOST = process.env.HOST ?? "127.0.0.1";
 if (process.argv.includes("--stdio")) {
@@ -29,6 +33,38 @@ else {
     });
     app.get("/healthz", (_req, res) => res.json({ ok: true }));
     app.get("/catalog.json", async (_req, res) => res.json(await getCatalog()));
+    // Maintainer inbox API (only when SKILLMCP_ADMIN_TOKEN is set). Used by scripts/inbox.mjs against a hosted server.
+    const ADMIN = process.env.SKILLMCP_ADMIN_TOKEN;
+    const authed = (req) => {
+        const h = req.get("authorization") ?? "";
+        const t = Buffer.from(h.replace(/^Bearer\s+/i, ""));
+        const a = Buffer.from(ADMIN ?? "");
+        return !!ADMIN && t.length === a.length && timingSafeEqual(t, a);
+    };
+    const safeId = (id) => /^[A-Za-z0-9._-]+$/.test(id) && basename(id) === id;
+    app.use("/admin", (req, res, next) => (authed(req) ? next() : res.status(401).json({ error: "unauthorized" })));
+    app.get("/admin/inbox", (_req, res) => {
+        const items = existsSync(INBOX) ? readdirSync(INBOX).filter((f) => f.endsWith(".json")).sort() : [];
+        res.json(items.map((f) => JSON.parse(readFileSync(join(INBOX, f), "utf8"))));
+    });
+    app.get("/admin/inbox/:id", (req, res) => {
+        const id = req.params.id;
+        const p = join(INBOX, `${id}.json`);
+        if (!safeId(id) || !existsSync(p))
+            return res.status(404).json({ error: "not_found" });
+        res.type("json").send(readFileSync(p, "utf8"));
+    });
+    app.post("/admin/inbox/:id/:state", (req, res) => {
+        const { id, state } = req.params;
+        if (!safeId(id) || !["opened", "rejected"].includes(state))
+            return res.status(400).json({ error: "bad_request" });
+        const p = join(INBOX, `${id}.json`);
+        if (!existsSync(p))
+            return res.status(404).json({ error: "not_found" });
+        mkdirSync(join(INBOX, state), { recursive: true });
+        renameSync(p, join(INBOX, state, `${id}.json`));
+        res.json({ ok: true, id, state });
+    });
     // OAuth discovery probes: answer clearly (JSON 404) so clients treat this as an authless server.
     app.get(/^\/\.well-known\/.*/, (_req, res) => res.status(404).json({ error: "not_found", message: "SkillMCP requires no authentication" }));
     // Stateless: a fresh server+transport per request, no session ids. Simple and horizontally scalable.
