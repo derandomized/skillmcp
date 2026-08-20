@@ -1,0 +1,44 @@
+{
+  "name": "skillmcp",
+  "interface": {
+    "displayName": "SkillMCP"
+  },
+  "plugins": [
+    {
+      "name": "hello-skillmcp",
+      "source": {
+        "source": "local",
+        "path": "./plugins/hello-skillmcp"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Utilities"
+    },
+    {
+      "name": "commit-haiku",
+      "source": {
+        "source": "local",
+        "path": "./plugins/commit-haiku"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Developer Tools"
+    },
+    {
+      "name": "explain-like-a-pirate",
+      "source": {
+        "source": "local",
+        "path": "./plugins/explain-like-a-pirate"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Education"
+    }
+  ]
+}

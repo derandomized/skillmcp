@@ -1,0 +1,51 @@
+{
+  "name": "skillmcp",
+  "displayName": "SkillMCP",
+  "description": "Provider- and surface-agnostic skills marketplace. One repo, installable in Claude Code, Claude Cowork, claude.ai, ChatGPT, and Codex.",
+  "owner": {
+    "name": "Jace Kohlmeier",
+    "email": "jace.kohlmeier@gmail.com"
+  },
+  "plugins": [
+    {
+      "name": "hello-skillmcp",
+      "displayName": "Hello SkillMCP",
+      "description": "Smoke-test skill: confirms a SkillMCP install is live on any surface.",
+      "version": "0.1.0",
+      "source": "./plugins/hello-skillmcp",
+      "keywords": [
+        "test",
+        "hello-world",
+        "smoke-test"
+      ],
+      "category": "Utilities"
+    },
+    {
+      "name": "commit-haiku",
+      "displayName": "Commit Haiku",
+      "description": "Summarize a diff or PR as a 5-7-5 haiku plus a plain one-liner.",
+      "version": "0.1.0",
+      "source": "./plugins/commit-haiku",
+      "keywords": [
+        "git",
+        "haiku",
+        "commit",
+        "fun"
+      ],
+      "category": "Developer Tools"
+    },
+    {
+      "name": "explain-like-a-pirate",
+      "displayName": "Explain Like a Pirate",
+      "description": "Technically accurate explanations in a friendly pirate voice.",
+      "version": "0.1.0",
+      "source": "./plugins/explain-like-a-pirate",
+      "keywords": [
+        "explain",
+        "fun",
+        "teaching"
+      ],
+      "category": "Education"
+    }
+  ]
+}

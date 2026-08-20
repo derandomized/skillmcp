@@ -1,0 +1,150 @@
+{
+  "marketplace": {
+    "name": "skillmcp",
+    "displayName": "SkillMCP",
+    "description": "Provider- and surface-agnostic skills marketplace. One repo, installable in Claude Code, Claude Cowork, claude.ai, ChatGPT, and Codex.",
+    "owner": {
+      "name": "Jace Kohlmeier",
+      "email": "jace.kohlmeier@gmail.com"
+    },
+    "repository": "https://github.com/derandomized/skillmcp",
+    "homepage": "https://github.com/derandomized/skillmcp",
+    "license": "MIT"
+  },
+  "generatedBy": "scripts/build.mjs",
+  "plugins": [
+    {
+      "name": "hello-skillmcp",
+      "displayName": "Hello SkillMCP",
+      "description": "Smoke-test skill: confirms a SkillMCP install is live on any surface.",
+      "version": "0.1.0",
+      "category": "Utilities",
+      "keywords": [
+        "test",
+        "hello-world",
+        "smoke-test"
+      ],
+      "skills": [
+        {
+          "name": "hello-skillmcp",
+          "description": "Smoke-test skill that proves a SkillMCP-distributed skill is installed and active. Use when the user says \"hello skillmcp\", asks to test SkillMCP, or wants to confirm a marketplace install worked on this surface.",
+          "license": "MIT",
+          "metadata": {
+            "author": "skillmcp",
+            "version": "0.1.0"
+          },
+          "path": "plugins/hello-skillmcp/skills/hello-skillmcp/SKILL.md",
+          "bodyChars": 665
+        }
+      ],
+      "hasMcp": false,
+      "installs": {
+        "claude-code": [
+          "/plugin marketplace add derandomized/skillmcp",
+          "/plugin install hello-skillmcp@skillmcp"
+        ],
+        "codex-cli": [
+          "codex plugin marketplace add derandomized/skillmcp",
+          "/plugins → SkillMCP → hello-skillmcp → Install"
+        ],
+        "claude-ai": [
+          "Customize → Plugins → + (Personal plugins) → Add from a repository → https://github.com/derandomized/skillmcp",
+          "Install \"hello-skillmcp\""
+        ],
+        "chatgpt": [
+          "Plugins → add marketplace derandomized/skillmcp",
+          "Install \"hello-skillmcp\""
+        ]
+      }
+    },
+    {
+      "name": "commit-haiku",
+      "displayName": "Commit Haiku",
+      "description": "Summarize a diff or PR as a 5-7-5 haiku plus a plain one-liner.",
+      "version": "0.1.0",
+      "category": "Developer Tools",
+      "keywords": [
+        "git",
+        "haiku",
+        "commit",
+        "fun"
+      ],
+      "skills": [
+        {
+          "name": "commit-haiku",
+          "description": "Summarize a code change, diff, or pull request as a three-line haiku (5-7-5 syllables) followed by a one-sentence plain summary. Use when the user asks for a commit haiku, a poetic diff summary, or says \"haiku this change\".",
+          "license": "MIT",
+          "metadata": {
+            "author": "skillmcp",
+            "version": "0.1.0"
+          },
+          "path": "plugins/commit-haiku/skills/commit-haiku/SKILL.md",
+          "bodyChars": 913
+        }
+      ],
+      "hasMcp": false,
+      "installs": {
+        "claude-code": [
+          "/plugin marketplace add derandomized/skillmcp",
+          "/plugin install commit-haiku@skillmcp"
+        ],
+        "codex-cli": [
+          "codex plugin marketplace add derandomized/skillmcp",
+          "/plugins → SkillMCP → commit-haiku → Install"
+        ],
+        "claude-ai": [
+          "Customize → Plugins → + (Personal plugins) → Add from a repository → https://github.com/derandomized/skillmcp",
+          "Install \"commit-haiku\""
+        ],
+        "chatgpt": [
+          "Plugins → add marketplace derandomized/skillmcp",
+          "Install \"commit-haiku\""
+        ]
+      }
+    },
+    {
+      "name": "explain-like-a-pirate",
+      "displayName": "Explain Like a Pirate",
+      "description": "Technically accurate explanations in a friendly pirate voice.",
+      "version": "0.1.0",
+      "category": "Education",
+      "keywords": [
+        "explain",
+        "fun",
+        "teaching"
+      ],
+      "skills": [
+        {
+          "name": "explain-like-a-pirate",
+          "description": "Re-explain any technical concept, error message, or piece of code in the voice of a friendly pirate while keeping the explanation technically accurate. Use when the user asks to \"explain like a pirate\", \"pirate mode\", or wants a playful but correct explanation.",
+          "license": "MIT",
+          "metadata": {
+            "author": "skillmcp",
+            "version": "0.1.0"
+          },
+          "path": "plugins/explain-like-a-pirate/skills/explain-like-a-pirate/SKILL.md",
+          "bodyChars": 613
+        }
+      ],
+      "hasMcp": false,
+      "installs": {
+        "claude-code": [
+          "/plugin marketplace add derandomized/skillmcp",
+          "/plugin install explain-like-a-pirate@skillmcp"
+        ],
+        "codex-cli": [
+          "codex plugin marketplace add derandomized/skillmcp",
+          "/plugins → SkillMCP → explain-like-a-pirate → Install"
+        ],
+        "claude-ai": [
+          "Customize → Plugins → + (Personal plugins) → Add from a repository → https://github.com/derandomized/skillmcp",
+          "Install \"explain-like-a-pirate\""
+        ],
+        "chatgpt": [
+          "Plugins → add marketplace derandomized/skillmcp",
+          "Install \"explain-like-a-pirate\""
+        ]
+      }
+    }
+  ]
+}

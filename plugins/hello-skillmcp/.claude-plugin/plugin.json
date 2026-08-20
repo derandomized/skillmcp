@@ -1,0 +1,19 @@
+{
+  "name": "hello-skillmcp",
+  "displayName": "Hello SkillMCP",
+  "version": "0.1.0",
+  "description": "Smoke-test skill: confirms a SkillMCP install is live on any surface.",
+  "author": {
+    "name": "Jace Kohlmeier",
+    "email": "jace.kohlmeier@gmail.com"
+  },
+  "homepage": "https://github.com/derandomized/skillmcp/tree/main/plugins/hello-skillmcp",
+  "repository": "https://github.com/derandomized/skillmcp",
+  "license": "MIT",
+  "keywords": [
+    "test",
+    "hello-world",
+    "smoke-test"
+  ],
+  "skills": "./skills/"
+}

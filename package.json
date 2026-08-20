@@ -1,0 +1,13 @@
+{
+  "name": "skillmcp",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Provider- and surface-agnostic skills marketplace",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "validate": "node scripts/validate.mjs",
+    "server": "npm --prefix server run dev"
+  },
+  "license": "MIT"
+}
