@@ -2,7 +2,6 @@ import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mc
 import { z } from "zod";
 import { registerAppTool, registerAppResource, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
 import { readFileSync } from "node:fs";
-import { createRequire } from "node:module";
 import { join, dirname } from "node:path";
 import { fileURLToPath } from "node:url";
 import { validateSubmission, saveSubmission } from "./submit.js";
@@ -31,9 +30,8 @@ function loadUiHtml() {
         return uiHtml;
     const here = dirname(fileURLToPath(import.meta.url));
     const html = readFileSync(join(here, "..", "ui", "browse.html"), "utf8");
-    const require = createRequire(import.meta.url);
-    const sdk = readFileSync(require.resolve("@modelcontextprotocol/ext-apps/app-with-deps"), "utf8");
-    uiHtml = html.replace("/*__APP_SDK__*/", sdk);
+    const js = readFileSync(join(here, "..", "ui", "browse.bundle.js"), "utf8"); // built by esbuild (npm run build)
+    uiHtml = html.replace("/*__APP_JS__*/", () => js); // function form: bundle contains `$` patterns
     return uiHtml;
 }
 export function buildServer() {
