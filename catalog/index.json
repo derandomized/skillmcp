@@ -190,6 +190,49 @@
           "Install \"explain-like-a-pirate\""
         ]
       }
+    },
+    {
+      "name": "standup-summary",
+      "displayName": "Standup Summary",
+      "description": "Turn a rambling list of what you did into a crisp three-bullet standup update.",
+      "version": "0.1.0",
+      "category": "Productivity",
+      "keywords": [
+        "standup",
+        "summary"
+      ],
+      "skills": [
+        {
+          "name": "standup-summary",
+          "description": "Turn a rambling list of what you did into a crisp three-bullet standup update. Use when the user asks for a standup, daily update, or to summarize their work for a status meeting.",
+          "license": "MIT",
+          "metadata": {
+            "author": "Test Submitter",
+            "version": "0.1.0"
+          },
+          "path": "plugins/standup-summary/skills/standup-summary/SKILL.md",
+          "bodyChars": 136
+        }
+      ],
+      "hasMcp": false,
+      "installs": {
+        "claude-code": [
+          "/plugin marketplace add derandomized/skillmcp",
+          "/plugin install standup-summary@skillmcp"
+        ],
+        "codex-cli": [
+          "codex plugin marketplace add derandomized/skillmcp",
+          "/plugins → SkillMCP → standup-summary → Install"
+        ],
+        "claude-ai": [
+          "Customize → Plugins → + (Personal plugins) → Add from a repository → https://github.com/derandomized/skillmcp",
+          "Install \"standup-summary\""
+        ],
+        "chatgpt": [
+          "Plugins → add marketplace derandomized/skillmcp",
+          "Install \"standup-summary\""
+        ]
+      }
     }
   ]
 }

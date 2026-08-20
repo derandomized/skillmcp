@@ -36,6 +36,7 @@ Resources: `skillmcp://skills/{plugin}/{skill}` (raw `SKILL.md`), `skillmcp://ca
 | [`hello-skillmcp`](plugins/hello-skillmcp) | Smoke-test skill: confirms a SkillMCP install is live on any surface. | Utilities | 0.1.0 |
 | [`commit-haiku`](plugins/commit-haiku) | Summarize a diff or PR as a 5-7-5 haiku plus a plain one-liner. | Developer Tools | 0.1.0 |
 | [`explain-like-a-pirate`](plugins/explain-like-a-pirate) | Technically accurate explanations in a friendly pirate voice. | Education | 0.1.0 |
+| [`standup-summary`](plugins/standup-summary) | Turn a rambling list of what you did into a crisp three-bullet standup update. | Productivity | 0.1.0 |
 <!-- CATALOG:END -->
 
 ## Repository layout
