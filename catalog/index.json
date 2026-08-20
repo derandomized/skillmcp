@@ -10,7 +10,7 @@
     "repository": "https://github.com/derandomized/skillmcp",
     "homepage": "https://github.com/derandomized/skillmcp",
     "license": "MIT",
-    "mcpUrl": "https://spark-a804.tail0a4fc8.ts.net/mcp"
+    "mcpUrl": "https://skillmcp.fly.dev/mcp"
   },
   "generatedBy": "scripts/build.mjs",
   "plugins": [
@@ -18,7 +18,7 @@
       "name": "skillmcp",
       "displayName": "SkillMCP",
       "description": "Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant.",
-      "version": "0.2.0",
+      "version": "0.3.0",
       "category": "Utilities",
       "keywords": [
         "marketplace",

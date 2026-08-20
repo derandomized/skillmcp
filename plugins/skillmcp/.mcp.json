@@ -2,7 +2,7 @@
   "mcpServers": {
     "skillmcp": {
       "type": "http",
-      "url": "https://spark-a804.tail0a4fc8.ts.net/mcp"
+      "url": "https://skillmcp.fly.dev/mcp"
     }
   }
 }

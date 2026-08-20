@@ -14,8 +14,8 @@ install, and submit skills from inside the conversation.
 | Claude Code | `/plugin marketplace add derandomized/skillmcp` | `/plugin install skillmcp@skillmcp` |
 | Claude Cowork / Desktop | Customize → Plugins → **+** → *Add from a repository* → `https://github.com/derandomized/skillmcp` | click **Install** on *SkillMCP* |
 | Codex CLI | `codex plugin marketplace add derandomized/skillmcp` | `codex plugin add skillmcp@skillmcp` |
-| ChatGPT | Settings → Apps → Developer mode → add connector `https://spark-a804.tail0a4fc8.ts.net/mcp` | — |
-| claude.ai chat | Settings → Connectors → *Add custom connector* → `https://spark-a804.tail0a4fc8.ts.net/mcp` | — (toggle on per chat) |
+| ChatGPT | Settings → Apps → Developer mode → add connector `https://skillmcp.fly.dev/mcp` | — |
+| claude.ai chat | Settings → Connectors → *Add custom connector* → `https://skillmcp.fly.dev/mcp` | — (toggle on per chat) |
 
 **2. Install skills.** Say *"browse the SkillMCP marketplace"* and pick from the interactive
 catalog, or install directly, e.g. `/plugin install commit-haiku@skillmcp`.
@@ -29,7 +29,7 @@ that carries the catalog connector (an MCP server) plus a skill teaching the ass
 <!-- CATALOG:START -->
 | Plugin | Description | Category | Version |
 |---|---|---|---|
-| [`skillmcp`](plugins/skillmcp) | Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant. | Utilities | 0.2.0 |
+| [`skillmcp`](plugins/skillmcp) | Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant. | Utilities | 0.3.0 |
 | [`hello-skillmcp`](plugins/hello-skillmcp) | Smoke-test skill: confirms a SkillMCP install is live on any surface. | Utilities | 0.1.0 |
 | [`commit-haiku`](plugins/commit-haiku) | Summarize a diff or PR as a 5-7-5 haiku plus a plain one-liner. | Developer Tools | 0.1.0 |
 | [`explain-like-a-pirate`](plugins/explain-like-a-pirate) | Technically accurate explanations in a friendly pirate voice. | Education | 0.1.0 |
@@ -81,3 +81,9 @@ The MCP server exposes `submit_skill`. Tell your assistant *"submit this as a Sk
 collects your name (and optional email), validates the skill against the spec, and drops it in the
 maintainer review queue. A maintainer runs `npm run inbox` → `npm run inbox pr <id>` which opens a
 pull request attributed to you. Verified identity (email magic-link / org SSO via MCP OAuth) is planned.
+
+## Hosting
+
+The public server runs on Fly.io (`fly.toml`, `Dockerfile`): `flyctl deploy`. Submissions persist on
+the `/data` volume; maintainers read them remotely with
+`SKILLMCP_INBOX_URL=https://skillmcp.fly.dev SKILLMCP_ADMIN_TOKEN=… npm run inbox`.
