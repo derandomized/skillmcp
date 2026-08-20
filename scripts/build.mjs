@@ -145,3 +145,17 @@ write(".agents/plugins/marketplace.json", {
 });
 
 write("catalog/index.json", catalog);
+
+// README catalog table
+{
+  const readmePath = join(ROOT, "README.md");
+  if (existsSync(readmePath)) {
+    const rows = catalog.plugins.map((p) =>
+      `| [\`${p.name}\`](plugins/${p.name}) | ${p.description} | ${p.category} | ${p.version} |`);
+    const table = ["| Plugin | Description | Category | Version |", "|---|---|---|---|", ...rows].join("\n");
+    const src = readFileSync(readmePath, "utf8");
+    const out = src.replace(/<!-- CATALOG:START -->[\s\S]*?<!-- CATALOG:END -->/,
+      `<!-- CATALOG:START -->\n${table}\n<!-- CATALOG:END -->`);
+    if (out !== src) { writeFileSync(readmePath, out); console.log("wrote README.md catalog"); }
+  }
+}

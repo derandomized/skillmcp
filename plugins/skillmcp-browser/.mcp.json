@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "skillmcp": {
+      "command": "npx",
+      "args": ["-y", "github:derandomized/skillmcp#main", "--stdio"],
+      "env": {
+        "SKILLMCP_CATALOG_URL": "https://raw.githubusercontent.com/derandomized/skillmcp/main/catalog/index.json",
+        "SKILLMCP_RAW_BASE": "https://raw.githubusercontent.com/derandomized/skillmcp/main"
+      }
+    }
+  }
+}

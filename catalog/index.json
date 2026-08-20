@@ -14,6 +14,51 @@
   "generatedBy": "scripts/build.mjs",
   "plugins": [
     {
+      "name": "skillmcp-browser",
+      "displayName": "SkillMCP Browser",
+      "description": "Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server).",
+      "version": "0.1.0",
+      "category": "Utilities",
+      "keywords": [
+        "marketplace",
+        "browse",
+        "install",
+        "mcp"
+      ],
+      "skills": [
+        {
+          "name": "browse-skillmcp",
+          "description": "Browse, search, preview and install skills from the SkillMCP marketplace using the skillmcp MCP tools. Use when the user asks to find a skill, browse the marketplace, \"is there a skill for X\", or wants to install a skill on this surface.",
+          "license": "MIT",
+          "metadata": {
+            "author": "skillmcp",
+            "version": "0.1.0"
+          },
+          "path": "plugins/skillmcp-browser/skills/browse-skillmcp/SKILL.md",
+          "bodyChars": 959
+        }
+      ],
+      "hasMcp": true,
+      "installs": {
+        "claude-code": [
+          "/plugin marketplace add derandomized/skillmcp",
+          "/plugin install skillmcp-browser@skillmcp"
+        ],
+        "codex-cli": [
+          "codex plugin marketplace add derandomized/skillmcp",
+          "/plugins → SkillMCP → skillmcp-browser → Install"
+        ],
+        "claude-ai": [
+          "Customize → Plugins → + (Personal plugins) → Add from a repository → https://github.com/derandomized/skillmcp",
+          "Install \"skillmcp-browser\""
+        ],
+        "chatgpt": [
+          "Plugins → add marketplace derandomized/skillmcp",
+          "Install \"skillmcp-browser\""
+        ]
+      }
+    },
+    {
       "name": "hello-skillmcp",
       "displayName": "Hello SkillMCP",
       "description": "Smoke-test skill: confirms a SkillMCP install is live on any surface.",

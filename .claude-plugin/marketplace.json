@@ -8,6 +8,20 @@
   },
   "plugins": [
     {
+      "name": "skillmcp-browser",
+      "displayName": "SkillMCP Browser",
+      "description": "Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server).",
+      "version": "0.1.0",
+      "source": "./plugins/skillmcp-browser",
+      "keywords": [
+        "marketplace",
+        "browse",
+        "install",
+        "mcp"
+      ],
+      "category": "Utilities"
+    },
+    {
       "name": "hello-skillmcp",
       "displayName": "Hello SkillMCP",
       "description": "Smoke-test skill: confirms a SkillMCP install is live on any surface.",

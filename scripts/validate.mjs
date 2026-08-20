@@ -54,7 +54,8 @@ for (const p of reg.plugins) {
   }
 }
 
-// generated files must be in sync
+// generated files must be in sync (CI only; locally you iterate freely)
+if (process.env.CI)
 try {
   execSync("node scripts/build.mjs", { cwd: ROOT, stdio: "ignore" });
   const diff = execSync("git status --porcelain --untracked-files=no -- .claude-plugin .agents plugins/*/.claude-plugin plugins/*/.codex-plugin catalog", { cwd: ROOT }).toString().trim();

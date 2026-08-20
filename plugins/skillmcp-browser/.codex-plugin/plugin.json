@@ -1,0 +1,28 @@
+{
+  "name": "skillmcp-browser",
+  "version": "0.1.0",
+  "description": "Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server).",
+  "author": {
+    "name": "Jace Kohlmeier",
+    "email": "jace.kohlmeier@gmail.com"
+  },
+  "homepage": "https://github.com/derandomized/skillmcp/tree/main/plugins/skillmcp-browser",
+  "repository": "https://github.com/derandomized/skillmcp",
+  "license": "MIT",
+  "keywords": [
+    "marketplace",
+    "browse",
+    "install",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SkillMCP Browser",
+    "shortDescription": "Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server).",
+    "longDescription": "Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server).",
+    "developerName": "Jace Kohlmeier",
+    "category": "Utilities",
+    "websiteURL": "https://github.com/derandomized/skillmcp"
+  }
+}
