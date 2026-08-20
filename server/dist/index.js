@@ -21,8 +21,15 @@ else {
     });
     app.get("/healthz", (_req, res) => res.json({ ok: true }));
     app.get("/catalog.json", async (_req, res) => res.json(await getCatalog()));
+    // OAuth discovery probes: answer clearly (JSON 404) so clients treat this as an authless server.
+    app.get(/^\/\.well-known\/.*/, (_req, res) => res.status(404).json({ error: "not_found", message: "SkillMCP requires no authentication" }));
     // Stateless: a fresh server+transport per request, no session ids. Simple and horizontally scalable.
-    app.all("/mcp", async (req, res) => {
+    const mcpHandler = async (req, res) => {
+        if (req.method !== "POST") {
+            // No sessions → no server-initiated streams; say so instead of holding an empty SSE stream open.
+            res.set("Allow", "POST").status(405).json({ jsonrpc: "2.0", error: { code: -32000, message: "Method not allowed. Use POST (stateless Streamable HTTP)." }, id: null });
+            return;
+        }
         const server = buildServer();
         const transport = new StreamableHTTPServerTransport({ sessionIdGenerator: undefined });
         res.on("close", () => { transport.close(); server.close(); });
@@ -35,6 +42,9 @@ else {
             if (!res.headersSent)
                 res.status(500).json({ jsonrpc: "2.0", error: { code: -32603, message: "internal error" }, id: null });
         }
-    });
+    };
+    app.all("/mcp", mcpHandler);
+    app.all("/mcp/", mcpHandler);
+    app.post("/", mcpHandler); // tolerate users entering the bare origin as the connector URL
     app.listen(PORT, HOST, () => console.log(`SkillMCP MCP server on http://${HOST}:${PORT}/mcp`));
 }
