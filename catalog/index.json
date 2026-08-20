@@ -9,15 +9,16 @@
     },
     "repository": "https://github.com/derandomized/skillmcp",
     "homepage": "https://github.com/derandomized/skillmcp",
-    "license": "MIT"
+    "license": "MIT",
+    "mcpUrl": "https://spark-a804.tail0a4fc8.ts.net/mcp"
   },
   "generatedBy": "scripts/build.mjs",
   "plugins": [
     {
       "name": "skillmcp-browser",
       "displayName": "SkillMCP Browser",
-      "description": "Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server).",
-      "version": "0.1.0",
+      "description": "Browse, search, submit and install SkillMCP skills from inside your agent (adds the hosted SkillMCP connector).",
+      "version": "0.2.0",
       "category": "Utilities",
       "keywords": [
         "marketplace",

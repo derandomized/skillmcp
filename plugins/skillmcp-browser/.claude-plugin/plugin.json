@@ -1,8 +1,8 @@
 {
   "name": "skillmcp-browser",
   "displayName": "SkillMCP Browser",
-  "version": "0.1.0",
-  "description": "Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server).",
+  "version": "0.2.0",
+  "description": "Browse, search, submit and install SkillMCP skills from inside your agent (adds the hosted SkillMCP connector).",
   "author": {
     "name": "Jace Kohlmeier",
     "email": "jace.kohlmeier@gmail.com"

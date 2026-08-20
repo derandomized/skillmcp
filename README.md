@@ -21,8 +21,8 @@ SkillMCP also runs as an **MCP server**, so any MCP-capable surface can search t
 preview a skill, and get exact install steps without leaving the conversation.
 
 - **Remote** (ChatGPT developer-mode connector, Claude custom connector): point at the hosted
-  Streamable HTTP endpoint `https://<host>/mcp`.
-- **Bundled**: install the `skillmcp-browser` plugin — it runs the same server locally over stdio.
+  Streamable HTTP endpoint `https://spark-a804.tail0a4fc8.ts.net/mcp`.
+- **Bundled**: install the `skillmcp-browser` plugin — it adds the hosted connector automatically (Cowork, Claude Code, Codex).
 
 Tools: `list_skills`, `search_skills`, `get_skill`, `install_instructions`.
 Resources: `skillmcp://skills/{plugin}/{skill}` (raw `SKILL.md`), `skillmcp://catalog`.
@@ -32,7 +32,7 @@ Resources: `skillmcp://skills/{plugin}/{skill}` (raw `SKILL.md`), `skillmcp://ca
 <!-- CATALOG:START -->
 | Plugin | Description | Category | Version |
 |---|---|---|---|
-| [`skillmcp-browser`](plugins/skillmcp-browser) | Browse, search and install SkillMCP skills from inside your agent (bundles the SkillMCP MCP server). | Utilities | 0.1.0 |
+| [`skillmcp-browser`](plugins/skillmcp-browser) | Browse, search, submit and install SkillMCP skills from inside your agent (adds the hosted SkillMCP connector). | Utilities | 0.2.0 |
 | [`hello-skillmcp`](plugins/hello-skillmcp) | Smoke-test skill: confirms a SkillMCP install is live on any surface. | Utilities | 0.1.0 |
 | [`commit-haiku`](plugins/commit-haiku) | Summarize a diff or PR as a 5-7-5 haiku plus a plain one-liner. | Developer Tools | 0.1.0 |
 | [`explain-like-a-pirate`](plugins/explain-like-a-pirate) | Technically accurate explanations in a friendly pirate voice. | Education | 0.1.0 |

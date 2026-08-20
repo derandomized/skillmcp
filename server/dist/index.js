@@ -14,6 +14,14 @@ if (process.argv.includes("--stdio")) {
 else {
     const app = express();
     app.use(express.json({ limit: "1mb" }));
+    app.use((req, res, next) => {
+        const t0 = Date.now();
+        res.on("finish", () => {
+            const m = req.body?.method ?? "";
+            console.log(`${req.method} ${req.originalUrl} ${m} → ${res.statusCode} ${Date.now() - t0}ms ua=${JSON.stringify(req.get("user-agent") ?? "")} xff=${req.get("x-forwarded-for") ?? ""} accept=${JSON.stringify(req.get("accept") ?? "")}`);
+        });
+        next();
+    });
     app.get("/", async (_req, res) => {
         const cat = await getCatalog();
         res.type("text/plain").send(`SkillMCP remote MCP server\n\nMCP endpoint: POST /mcp (Streamable HTTP)\n` +
