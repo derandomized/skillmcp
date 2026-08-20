@@ -34,7 +34,8 @@ if (process.argv.includes("--stdio")) {
     const t0 = Date.now();
     res.on("finish", () => {
       const m = req.body?.method ?? "";
-      console.log(`${req.method} ${req.originalUrl} ${m} → ${res.statusCode} ${Date.now() - t0}ms ua=${JSON.stringify(req.get("user-agent") ?? "")} xff=${req.get("x-forwarded-for") ?? ""} accept=${JSON.stringify(req.get("accept") ?? "")}`);
+      const detail = req.body?.params?.name ?? req.body?.params?.uri ?? "";
+      console.log(`${req.method} ${req.originalUrl} ${m}${detail ? ` ${detail}` : ""} → ${res.statusCode} ${Date.now() - t0}ms ua=${JSON.stringify(req.get("user-agent") ?? "")} xff=${req.get("x-forwarded-for") ?? ""} accept=${JSON.stringify(req.get("accept") ?? "")}`);
     });
     next();
   });
