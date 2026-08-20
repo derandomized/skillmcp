@@ -34,9 +34,12 @@ if (!cmd) {
 } else if (cmd === "pr") {
   const s = load(id);
   if (sh("git status --porcelain")) throw new Error("working tree not clean");
+  try { sh("git config user.name && git config user.email"); } catch { throw new Error("set git user.name/user.email first"); }
+  sh("gh auth status");
   const branch = `submission/${s.name}`;
   sh("git checkout -q main && git pull -q --ff-only");
   sh(`git checkout -q -b ${branch}`);
+  try {
   const dir = join(ROOT, "plugins", s.name, "skills", s.name);
   mkdirSync(dir, { recursive: true });
   const fm = [
@@ -59,6 +62,11 @@ if (!cmd) {
   renameSync(join(INBOX, `${id}.json`), join(INBOX, "opened", `${id}.json`));
   sh("git checkout -q main");
   console.log("opened", url);
+  } catch (e) {
+    // roll back so the inbox item can be retried cleanly
+    sh(`git checkout -q -- . && git clean -qfd && git checkout -q main && git branch -qD ${branch}`);
+    throw e;
+  }
 } else {
   console.error("unknown command"); process.exit(1);
 }
