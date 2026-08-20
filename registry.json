@@ -62,6 +62,17 @@
         "fun",
         "teaching"
       ]
+    },
+    {
+      "name": "standup-summary",
+      "displayName": "Standup Summary",
+      "description": "Turn a rambling list of what you did into a crisp three-bullet standup update.",
+      "version": "0.1.0",
+      "category": "Productivity",
+      "keywords": [
+        "standup",
+        "summary"
+      ]
     }
   ]
 }

@@ -1,0 +1,18 @@
+{
+  "name": "standup-summary",
+  "displayName": "Standup Summary",
+  "version": "0.1.0",
+  "description": "Turn a rambling list of what you did into a crisp three-bullet standup update.",
+  "author": {
+    "name": "Jace Kohlmeier",
+    "email": "jace.kohlmeier@gmail.com"
+  },
+  "homepage": "https://github.com/derandomized/skillmcp/tree/main/plugins/standup-summary",
+  "repository": "https://github.com/derandomized/skillmcp",
+  "license": "MIT",
+  "keywords": [
+    "standup",
+    "summary"
+  ],
+  "skills": "./skills/"
+}
