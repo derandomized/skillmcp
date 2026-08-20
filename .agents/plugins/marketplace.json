@@ -5,10 +5,10 @@
   },
   "plugins": [
     {
-      "name": "skillmcp-browser",
+      "name": "skillmcp",
       "source": {
         "source": "local",
-        "path": "./plugins/skillmcp-browser"
+        "path": "./plugins/skillmcp"
       },
       "policy": {
         "installation": "AVAILABLE",

@@ -15,9 +15,9 @@
   "generatedBy": "scripts/build.mjs",
   "plugins": [
     {
-      "name": "skillmcp-browser",
-      "displayName": "SkillMCP Browser",
-      "description": "Browse, search, submit and install SkillMCP skills from inside your agent (adds the hosted SkillMCP connector).",
+      "name": "skillmcp",
+      "displayName": "SkillMCP",
+      "description": "Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant.",
       "version": "0.2.0",
       "category": "Utilities",
       "keywords": [
@@ -35,27 +35,27 @@
             "author": "skillmcp",
             "version": "0.1.0"
           },
-          "path": "plugins/skillmcp-browser/skills/browse-skillmcp/SKILL.md",
-          "bodyChars": 959
+          "path": "plugins/skillmcp/skills/browse-skillmcp/SKILL.md",
+          "bodyChars": 987
         }
       ],
       "hasMcp": true,
       "installs": {
         "claude-code": [
           "/plugin marketplace add derandomized/skillmcp",
-          "/plugin install skillmcp-browser@skillmcp"
+          "/plugin install skillmcp@skillmcp"
         ],
         "codex-cli": [
           "codex plugin marketplace add derandomized/skillmcp",
-          "/plugins → SkillMCP → skillmcp-browser → Install"
+          "/plugins → SkillMCP → skillmcp → Install"
         ],
         "claude-ai": [
           "Customize → Plugins → + (Personal plugins) → Add from a repository → https://github.com/derandomized/skillmcp",
-          "Install \"skillmcp-browser\""
+          "Install \"skillmcp\""
         ],
         "chatgpt": [
           "Plugins → add marketplace derandomized/skillmcp",
-          "Install \"skillmcp-browser\""
+          "Install \"skillmcp\""
         ]
       }
     },

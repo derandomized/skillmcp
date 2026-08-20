@@ -1,0 +1,28 @@
+{
+  "name": "skillmcp",
+  "version": "0.2.0",
+  "description": "Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant.",
+  "author": {
+    "name": "Jace Kohlmeier",
+    "email": "jace.kohlmeier@gmail.com"
+  },
+  "homepage": "https://github.com/derandomized/skillmcp/tree/main/plugins/skillmcp",
+  "repository": "https://github.com/derandomized/skillmcp",
+  "license": "MIT",
+  "keywords": [
+    "marketplace",
+    "browse",
+    "install",
+    "mcp"
+  ],
+  "skills": "./skills/",
+  "mcpServers": "./.mcp.json",
+  "interface": {
+    "displayName": "SkillMCP",
+    "shortDescription": "Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant.",
+    "longDescription": "Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant.",
+    "developerName": "Jace Kohlmeier",
+    "category": "Utilities",
+    "websiteURL": "https://github.com/derandomized/skillmcp"
+  }
+}

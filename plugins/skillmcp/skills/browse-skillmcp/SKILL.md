@@ -9,7 +9,7 @@ metadata:
 
 # Browse SkillMCP
 
-The `skillmcp` MCP server exposes the marketplace catalog.
+The `skillmcp` connector (installed with this plugin) exposes the marketplace catalog.
 
 ## Workflow
 

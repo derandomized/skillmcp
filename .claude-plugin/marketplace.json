@@ -8,11 +8,11 @@
   },
   "plugins": [
     {
-      "name": "skillmcp-browser",
-      "displayName": "SkillMCP Browser",
-      "description": "Browse, search, submit and install SkillMCP skills from inside your agent (adds the hosted SkillMCP connector).",
+      "name": "skillmcp",
+      "displayName": "SkillMCP",
+      "description": "Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant.",
       "version": "0.2.0",
-      "source": "./plugins/skillmcp-browser",
+      "source": "./plugins/skillmcp",
       "keywords": [
         "marketplace",
         "browse",

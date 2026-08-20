@@ -52,7 +52,7 @@ summary{cursor:pointer;color:var(--accent)}a{color:var(--accent)}footer{margin-t
 </div>
 <input id="q" placeholder="Search ${cat.plugins.length} skills…" autofocus>
 <div class="grid" id="grid">${cards}</div>
-<footer>Browse from inside your agent: connect the SkillMCP MCP server or install <code>skillmcp-browser</code>. · <a href="${M.repository}">GitHub</a> · <a href="catalog.json">catalog.json</a></footer>
+<footer>Install <code>skillmcp</code> once, then install skills from inside your assistant. · <a href="${M.repository}">GitHub</a> · <a href="catalog.json">catalog.json</a></footer>
 </div>
 <script>
 const q=document.getElementById('q');q.addEventListener('input',()=>{const t=q.value.toLowerCase();for(const c of document.querySelectorAll('.card'))c.style.display=c.dataset.search.includes(t)?'':'none'});

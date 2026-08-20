@@ -1,38 +1,35 @@
 # SkillMCP
 
-**A provider- and surface-agnostic skills marketplace.** One repository, one set of
-[Agent Skills](https://agentskills.io)-compliant `SKILL.md` files, installable in:
+**One skills marketplace for every AI assistant.** Skills written once (open
+[Agent Skills](https://agentskills.io) format) install in Claude Code, Claude Cowork/Desktop,
+claude.ai, ChatGPT and Codex.
 
-| Surface | Add the marketplace (once) | Install a skill |
+## Two steps, any surface
+
+**1. Install SkillMCP** (once). This gives your assistant the catalog: browse, search, preview,
+install, and submit skills from inside the conversation.
+
+| Surface | Add the marketplace | Install SkillMCP |
 |---|---|---|
-| **Claude Code** | `/plugin marketplace add derandomized/skillmcp` | `/plugin install commit-haiku@skillmcp` |
-| **Claude.ai / Desktop / Cowork** | Customize → Plugins → **+** (Personal plugins) → *Add from a repository* → `https://github.com/derandomized/skillmcp` | click **Install** on the plugin |
-| **Codex CLI** | `codex plugin marketplace add derandomized/skillmcp` | `codex plugin add commit-haiku@skillmcp` (or `/plugins` in the TUI) |
-| **ChatGPT** | Plugins → add marketplace `derandomized/skillmcp` | click **Install** on the plugin |
+| Claude Code | `/plugin marketplace add derandomized/skillmcp` | `/plugin install skillmcp@skillmcp` |
+| Claude Cowork / Desktop | Customize → Plugins → **+** → *Add from a repository* → `https://github.com/derandomized/skillmcp` | click **Install** on *SkillMCP* |
+| Codex CLI | `codex plugin marketplace add derandomized/skillmcp` | `codex plugin add skillmcp@skillmcp` |
+| ChatGPT | Settings → Apps → Developer mode → add connector `https://spark-a804.tail0a4fc8.ts.net/mcp` | — |
+| claude.ai chat | Settings → Connectors → *Add custom connector* → `https://spark-a804.tail0a4fc8.ts.net/mcp` | — (toggle on per chat) |
 
-Every plugin ships **both** manifests (`.claude-plugin/plugin.json` and `.codex-plugin/plugin.json`),
-and the repo publishes **both** marketplace indexes (`.claude-plugin/marketplace.json` and
-`.agents/plugins/marketplace.json`). They are generated from a single [`registry.json`](registry.json)
-so they can never drift.
+**2. Install skills.** Say *"browse the SkillMCP marketplace"* and pick from the interactive
+catalog, or install directly, e.g. `/plugin install commit-haiku@skillmcp`.
 
-## Browse from inside your agent
-
-SkillMCP also runs as an **MCP server**, so any MCP-capable surface can search the catalog,
-preview a skill, and get exact install steps without leaving the conversation.
-
-- **Remote** (ChatGPT developer-mode connector, Claude custom connector): point at the hosted
-  Streamable HTTP endpoint `https://spark-a804.tail0a4fc8.ts.net/mcp`.
-- **Bundled**: install the `skillmcp-browser` plugin — it adds the hosted connector automatically (Cowork, Claude Code, Codex).
-
-Tools: `list_skills`, `search_skills`, `get_skill`, `install_instructions`.
-Resources: `skillmcp://skills/{plugin}/{skill}` (raw `SKILL.md`), `skillmcp://catalog`.
+That's the whole model. Under the hood, vendors call the installable unit a *plugin*; every skill
+here is wrapped in its own plugin so the store can install it, and *SkillMCP* itself is a plugin
+that carries the catalog connector (an MCP server) plus a skill teaching the assistant to use it.
 
 ## Catalog
 
 <!-- CATALOG:START -->
 | Plugin | Description | Category | Version |
 |---|---|---|---|
-| [`skillmcp-browser`](plugins/skillmcp-browser) | Browse, search, submit and install SkillMCP skills from inside your agent (adds the hosted SkillMCP connector). | Utilities | 0.2.0 |
+| [`skillmcp`](plugins/skillmcp) | Install this once: browse, search, try, submit and install SkillMCP skills from inside your assistant. | Utilities | 0.2.0 |
 | [`hello-skillmcp`](plugins/hello-skillmcp) | Smoke-test skill: confirms a SkillMCP install is live on any surface. | Utilities | 0.1.0 |
 | [`commit-haiku`](plugins/commit-haiku) | Summarize a diff or PR as a 5-7-5 haiku plus a plain one-liner. | Developer Tools | 0.1.0 |
 | [`explain-like-a-pirate`](plugins/explain-like-a-pirate) | Technically accurate explanations in a friendly pirate voice. | Education | 0.1.0 |
