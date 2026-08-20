@@ -77,3 +77,10 @@ Env: `PORT`, `HOST`, `SKILLMCP_CATALOG_URL` / `SKILLMCP_RAW_BASE` (serve from Gi
 ## License
 
 MIT
+
+## Submitting from inside Claude / ChatGPT (no GitHub account)
+
+The MCP server exposes `submit_skill`. Tell your assistant *"submit this as a SkillMCP skill"*; it
+collects your name (and optional email), validates the skill against the spec, and drops it in the
+maintainer review queue. A maintainer runs `npm run inbox` → `npm run inbox pr <id>` which opens a
+pull request attributed to you. Verified identity (email magic-link / org SSO via MCP OAuth) is planned.

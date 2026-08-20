@@ -1,5 +1,11 @@
 import { McpServer, ResourceTemplate } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { z } from "zod";
+import { registerAppTool, registerAppResource, RESOURCE_MIME_TYPE } from "@modelcontextprotocol/ext-apps/server";
+import { readFileSync } from "node:fs";
+import { createRequire } from "node:module";
+import { join, dirname } from "node:path";
+import { fileURLToPath } from "node:url";
+import { validateSubmission, saveSubmission } from "./submit.js";
 import { getCatalog, readSkillMarkdown, findPlugin, search, type Plugin, type Surface } from "./catalog.js";
 
 const SURFACES = ["claude-code", "codex-cli", "claude-ai", "chatgpt"] as const;
@@ -21,6 +27,18 @@ function fmtInstall(p: Plugin, surface?: Surface): string {
   return targets
     .map((s) => `${SURFACE_LABEL[s]}:\n` + p.installs[s].map((l, i) => `  ${i + 1}. ${l}`).join("\n"))
     .join("\n\n");
+}
+
+const UI_URI = "ui://skillmcp/browse.html";
+let uiHtml: string | null = null;
+function loadUiHtml(): string {
+  if (uiHtml) return uiHtml;
+  const here = dirname(fileURLToPath(import.meta.url));
+  const html = readFileSync(join(here, "..", "ui", "browse.html"), "utf8");
+  const require = createRequire(import.meta.url);
+  const sdk = readFileSync(require.resolve("@modelcontextprotocol/ext-apps/app-with-deps"), "utf8");
+  uiHtml = html.replace("/*__APP_SDK__*/", sdk);
+  return uiHtml;
 }
 
 export function buildServer(): McpServer {
@@ -145,6 +163,72 @@ export function buildServer(): McpServer {
       if (!p || !s) throw new Error(`unknown skill ${plugin}/${skill}`);
       return { contents: [{ uri: uri.href, mimeType: "text/markdown", text: await readSkillMarkdown(s) }] };
     }
+  );
+
+  server.registerTool(
+    "submit_skill",
+    {
+      title: "Submit a skill for review",
+      description:
+        "Submit a new skill to the SkillMCP marketplace. No GitHub account needed: the submission goes to a " +
+        "maintainer review queue and becomes a pull request on your behalf. Provide the SKILL.md body WITHOUT " +
+        "frontmatter (it is generated). Ask the user for their name (and email if they want follow-up) before calling.",
+      inputSchema: {
+        name: z.string().describe("Skill id: lowercase, digits, hyphens, e.g. 'release-notes'"),
+        displayName: z.string().describe("Human name, e.g. 'Release Notes'"),
+        description: z.string().describe("What it does AND when to use it (≤1024 chars)"),
+        category: z.string().default("Utilities"),
+        keywords: z.array(z.string()).default([]),
+        body: z.string().describe("Markdown instructions (the SKILL.md body, no frontmatter)"),
+        submitter_name: z.string().describe("Submitter's name as they gave it"),
+        submitter_email: z.string().optional().describe("Optional email for review follow-up"),
+        surface: z.string().optional().describe("Where this was submitted from, e.g. 'chatgpt', 'claude-ai'"),
+      },
+    },
+    async (a) => {
+      const sub = {
+        name: a.name, displayName: a.displayName, description: a.description, category: a.category,
+        keywords: a.keywords, body: a.body,
+        submitter: { name: a.submitter_name, email: a.submitter_email, surface: a.surface },
+      };
+      const errs = validateSubmission(sub);
+      if (errs.length) return { content: [{ type: "text", text: `Submission rejected:\n- ${errs.join("\n- ")}` }], isError: true };
+      const cat = await getCatalog();
+      if (findPlugin(cat, a.name)) return { content: [{ type: "text", text: `A skill named '${a.name}' already exists. Pick another name.` }], isError: true };
+      const saved = saveSubmission(sub);
+      return {
+        content: [{ type: "text", text:
+          `Submitted ✔  id: ${saved.id}\n"${a.displayName}" is in the SkillMCP review queue, attributed to ${a.submitter_name}` +
+          `${a.submitter_email ? ` <${a.submitter_email}>` : ""}. A maintainer will review it and open a pull request in ` +
+          `${cat.marketplace.repository}; once merged it is installable on every surface.` }],
+        structuredContent: { id: saved.id },
+      };
+    }
+  );
+
+  // MCP App: interactive catalog browser (renders inline in Claude / ChatGPT / other MCP Apps hosts)
+  registerAppTool(
+    server,
+    "browse_skills",
+    {
+      title: "Browse skills (interactive)",
+      description:
+        "Open an interactive SkillMCP catalog browser with search, previews and one-click install steps. " +
+        "Prefer this over list_skills when the host supports MCP Apps UI.",
+      inputSchema: { query: z.string().optional().describe("Optional initial search") },
+      _meta: { ui: { resourceUri: UI_URI } },
+    },
+    async ({ query }) => {
+      const cat = await getCatalog();
+      const plugins = search(cat, query ?? "");
+      return {
+        content: [{ type: "text", text: `Showing ${plugins.length} SkillMCP skill(s)${query ? ` for "${query}"` : ""}. The interactive browser is displayed above.` }],
+        structuredContent: { plugins },
+      };
+    }
+  );
+  registerAppResource(server, "SkillMCP Browser", UI_URI, { mimeType: RESOURCE_MIME_TYPE, description: "Interactive SkillMCP catalog" },
+    async () => ({ contents: [{ uri: UI_URI, mimeType: RESOURCE_MIME_TYPE, text: loadUiHtml() }] })
   );
 
   server.registerResource(
